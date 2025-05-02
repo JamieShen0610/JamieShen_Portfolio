@@ -1,0 +1,21 @@
+import os
+import pandas as pd
+
+# === 設定資料夾路徑 ===
+excel_dir = 'C:/Users/p10416379/Documents/excel_files'    # Excel 檔所在資料夾
+output_dir = 'C:/Users/p10416379/Documents/0429_task'  # 輸出資料夾
+
+# === 開始讀取每個 Excel 檔案 ===
+for file in os.listdir(excel_dir):
+    if file.endswith('.xlsx') or file.endswith('.xls'):
+        excel_path = os.path.join(excel_dir, file)
+        folder_name = os.path.splitext(file)[0]  # 拿掉副檔名
+        base_folder = os.path.join(output_dir, folder_name)
+        os.makedirs(base_folder, exist_ok=True)
+
+        # 讀取 name_key 欄位
+        df = pd.read_excel(excel_path, usecols=['name_key'])
+
+        for name_key in df['name_key'].dropna().astype(str):
+            subfolder = os.path.join(base_folder, name_key)
+            os.makedirs(subfolder, exist_ok=True)
